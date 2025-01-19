@@ -1,7 +1,9 @@
 package com.github.liushidai.img_server.resource;
 
+import com.github.liushidai.img_server.config.result.ResultUtil;
 import com.github.liushidai.img_server.model.User;
 import com.github.liushidai.img_server.resource.user.Login;
+import com.github.liushidai.img_server.resource.user.Register;
 import com.github.liushidai.img_server.resource.user.Token;
 import com.github.liushidai.img_server.util.BcryptUtil;
 import io.quarkus.cache.Cache;
@@ -29,18 +31,37 @@ public class UserResource {
     Cache cache;
 
     @WithSession
+    @Path("/register")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Uni<Response> register(@Valid @NotNull Register register) {
+        return User.findByUsername(register.username()).onItem().transform(e->{
+            if (e==null){
+                // 可注册
+//                User.persist()
+                return Response.status(Response.Status.CONFLICT).entity(ResultUtil.failed("user.register.username_already_exist")).build();
+            }else {
+                // 已存在
+                return Response.status(Response.Status.CONFLICT).entity(ResultUtil.failed("user.register.username_already_exist")).build();
+            }
+        });
+    }
+
+
+
+    @WithSession
     @Path("/login")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Uni<Response> login(@Valid @NotNull Login login) {
-        return User.findByUsername("admin").onItem().ifNotNull().transform(e -> {
+        return User.findByUsername(login.username()).onItem().ifNotNull().transform(e -> {
             boolean checked = BcryptUtil.checkPassword(login.password(), e.password);
             if (checked) {
-                return Response.ok(token(e)).build();
+                return Response.ok(ResultUtil.data(token(e))).build();
             } else {
-                return Response.status(Response.Status.UNAUTHORIZED).build();
+                return Response.status(Response.Status.UNAUTHORIZED).entity(ResultUtil.failed("user.login.error")).build();
             }
-        }).onItem().ifNull().continueWith(Response.status(Response.Status.UNAUTHORIZED).build());
+        }).onItem().ifNull().continueWith(Response.status(Response.Status.UNAUTHORIZED).entity(ResultUtil.failed("user.login.error")).build());
     }
 
     /**

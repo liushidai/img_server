@@ -26,6 +26,16 @@ public class User extends BaseEntity implements Serializable {
      */
     @ManyToOne
     public UserGroup userGroup;
+
+    public User() {
+    }
+
+    public User(UserGroup userGroup, String password, String username) {
+        this.userGroup = userGroup;
+        this.password = password;
+        this.username = username;
+    }
+
     /**
      * 通过用户名查询
      *

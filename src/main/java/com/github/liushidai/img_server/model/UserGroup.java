@@ -16,6 +16,10 @@ public class UserGroup extends BaseEntity implements Serializable {
     @Column(nullable = false, length = 20)
     public String groupName;
     /**
+     * 用户组类型
+     */
+    public UserGroupType userGroupType;
+    /**
      * 上传数量限制
      */
     public int uploadLimitCount;
@@ -36,5 +40,10 @@ public class UserGroup extends BaseEntity implements Serializable {
     // 枚举定义上传容量类型
     public enum UploadCapacityType {
         MB, GB, TB
+    }
+
+    // 用户组类型
+    public enum UserGroupType {
+        ADMIN, COMMON
     }
 }

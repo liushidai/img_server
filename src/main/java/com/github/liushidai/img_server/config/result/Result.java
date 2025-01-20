@@ -3,9 +3,6 @@ package com.github.liushidai.img_server.config.result;
 
 import java.io.Serializable;
 
-/**
- * @author 前后端交互数据标准
- */
 public class Result<T> implements Serializable {
 
     /**

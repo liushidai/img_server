@@ -37,6 +37,11 @@ public class UserGroup extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "userGroup")
     public List<User> users;
 
+
+    public UserGroup() {
+
+    }
+
     // 枚举定义上传容量类型
     public enum UploadCapacityType {
         MB, GB, TB
@@ -46,4 +51,5 @@ public class UserGroup extends BaseEntity implements Serializable {
     public enum UserGroupType {
         ADMIN, COMMON
     }
+
 }

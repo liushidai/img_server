@@ -1,6 +1,9 @@
 package com.github.liushidai.img_server.model;
 
 import com.github.liushidai.img_server.base.BaseEntity;
+import io.quarkus.cache.CacheKey;
+import io.quarkus.cache.CacheResult;
+import io.smallrye.mutiny.Uni;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -36,7 +39,10 @@ public class UserGroup extends BaseEntity implements Serializable {
      */
     @OneToMany(mappedBy = "userGroup")
     public List<User> users;
-
+    @CacheResult(cacheName = "UserGroup")
+    public static Uni<UserGroup> getUserGroupById(@CacheKey Long id) {
+        return findById(id);
+    }
 
     public UserGroup() {
 

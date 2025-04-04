@@ -13,7 +13,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.17.7</quarkus.platform.version>
+        <quarkus.platform.version>3.21.1</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.5.0</surefire-plugin.version>
         <latest-version>0.10.2</latest-version>
@@ -51,7 +51,11 @@
         <!--缓存-->
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-cache</artifactId>
+            <artifactId>quarkus-redis-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-redis-client</artifactId>
         </dependency>
         <!--bean的生命周期、依赖注入(DI)-->
         <dependency>
@@ -92,26 +96,6 @@
             <artifactId>quarkus-test-hibernate-reactive-panache</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>io.quarkus</groupId>-->
-        <!--            <artifactId>quarkus-config-yaml</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>io.quarkus</groupId>-->
-        <!--            <artifactId>quarkus-hibernate-orm-rest-data-panache</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>io.quarkus</groupId>-->
-        <!--            <artifactId>quarkus-hibernate-reactive-rest-data-panache</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>io.quarkus</groupId>-->
-        <!--            <artifactId>quarkus-mongodb-rest-data-panache</artifactId>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>io.quarkus</groupId>-->
-        <!--            <artifactId>quarkus-jdbc-mysql</artifactId>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>at.favre.lib</groupId>
             <artifactId>bcrypt</artifactId>

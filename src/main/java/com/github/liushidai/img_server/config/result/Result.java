@@ -1,8 +1,12 @@
 package com.github.liushidai.img_server.config.result;
 
 
-import java.io.Serializable;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.io.Serializable;
+@JsonSerialize
+@JsonDeserialize
 public class Result<T> implements Serializable {
 
     /**

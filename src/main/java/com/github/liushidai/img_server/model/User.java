@@ -1,12 +1,18 @@
 package com.github.liushidai.img_server.model;
 
 import com.github.liushidai.img_server.base.BaseEntity;
+import io.quarkus.cache.CacheInvalidate;
+import io.quarkus.cache.CacheKey;
+import io.quarkus.cache.CacheResult;
+import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
+
+import static com.github.liushidai.img_server.Constant.CACHE_NOT_FOUND;
 
 @Entity
 public class User extends BaseEntity implements Serializable {
@@ -30,10 +36,10 @@ public class User extends BaseEntity implements Serializable {
     public User() {
     }
 
-    public User(UserGroup userGroup, String password, String username) {
-        this.userGroup = userGroup;
-        this.password = password;
+    public User(String username, String password, UserGroup userGroup) {
         this.username = username;
+        this.password = password;
+        this.userGroup = userGroup;
     }
 
     /**
@@ -42,10 +48,25 @@ public class User extends BaseEntity implements Serializable {
      * @param username username
      * @return Uni<User>
      */
-
-    public static Uni<User> findByUsername(String username) {
-        return find("username", username).firstResult();
+    @CacheResult(cacheName = "User")
+    public static Uni<User> findByUsername(@CacheKey String username) {
+        return find("username", username)
+                .firstResult();
     }
 
-
+    @CacheInvalidate(cacheName = "User")
+    public Uni<Void> save() {
+        return persist(this).onItem().invoke(() -> invalidateCache(this.username));
+    }
+    /**
+     * 清除指定用户名的缓存项
+     * 调用该方法时，Quarkus Cache 扩展会自动清理名为 "User" 的缓存中，对应的 @CacheKey
+     *
+     * @param username 用户名，即缓存KEY
+     */
+    @CacheInvalidate(cacheName = "User")
+    @SuppressWarnings("unused")
+    public static void invalidateCache(@CacheKey String username) {
+        // 方法体可以为空，注解 实现缓存清除
+    }
 }
